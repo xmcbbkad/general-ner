@@ -1,0 +1,62 @@
+# -*- coding: utf-8 -*-
+import sys
+import json
+import tensorflow as tf
+from simplex_sdk import SimplexClient
+
+
+def call_baidu_api(euler_client, str_input):
+    ret = euler_client.predict(str_input)
+    predict_y = ['O'] * len(str_input)
+    print(str_input)
+    json_str = euler_client.predict(str_input)
+    if(not isinstance(json_str, str)):
+        return predict_y
+
+    json_dict = json.loads(json_str)
+
+    for item in json_dict['output_ner']:
+        predict_y[item['offset']] = 'B-{}'.format(item['tag'])
+        for i in range(item['length']-1):
+            predict_y[item['offset']+1+i] = 'I-{}'.format(item['tag'])
+    
+    return predict_y
+
+
+if __name__ == '__main__':
+    f_predict = open(sys.argv[1], 'r')
+
+    euler_client = SimplexClient('NerBaiduApi', namespace='dev')
+
+    list_char = []
+    list_y = []
+
+    writer = tf.gfile.GFile(sys.argv[2], 'w')
+    count = 0
+    for line in f_predict:
+        if(count %100 == 0):
+            print(count)
+        count += 1
+     
+        if line.strip() == '':
+            sentence = ''.join(list_char)
+            predict_y = call_baidu_api(euler_client, sentence)
+
+            if(len(predict_y) != len(list_char)):
+                print("predict not match")
+
+            for i in range(len(list_char)):
+                output_line = '{}\t{}\n'.format(list_char[i], predict_y[i])
+                if(len(list_y) == len(list_pred)):
+                    output_line = '{}\t{}\t{}\n'.format(list_char[i], list_y[i], predict_y[i])
+                writer.write(output_line)
+            writer.write('\n')
+            writer.flush()
+            list_char = []
+            list_y = []
+        else:
+            list_line = line.strip().split()
+            list_char.append(list_line[0])
+            if(len(list_line) == 2):
+                list_y.append(list_line[1])
+    writer.close()
