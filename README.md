@@ -82,10 +82,10 @@ util/ner_metrics.py<br/>
 
 # general_ner_predict_sdk
   推理sdk
-  对齐问题：
-    1. bert的tokenizer会有split和join操作，tokenize之后的每个token很多情况下不能和原始文本对齐。
-    2. bert对原始文本处理后，会有[UNK], 不能和原始文本对齐。
-    3. bert的中文预训练模型要求对于字母to_lower，不容易和原始文本对齐。
+  ## 对齐问题
+  bert的tokenizer会有split和join操作，tokenize之后的每个token很多情况下不能和原始文本对齐。
+  bert对原始文本处理后，会有[UNK], 不能和原始文本对齐。
+  bert的中文预训练模型要求对于字母to_lower，不容易和原始文本对齐。
 
     例子：
     原始文本：曹œ斌是机器学习和自然语言处理专家，香港  科技 大学博士。曾任职于微软研究院、Bing 搜索，担任 CorTana 首席算法科学家
