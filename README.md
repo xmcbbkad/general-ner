@@ -81,4 +81,19 @@ util/ner_metrics.py<br/>
     input_file：三列，第一列是文本字符，第二列是标注label，第三列是预测label<br/>
 
 # general_ner_predict_sdk
-  推理逻辑
+  推理sdk
+  对齐问题：
+    1. bert的tokenizer会有split和join操作，tokenize之后的每个token很多情况下不能和原始文本对齐。
+    2. bert对原始文本处理后，会有[UNK], 不能和原始文本对齐。
+    3. bert的中文预训练模型要求对于字母to_lower，不容易和原始文本对齐。
+
+    例子：
+    原始文本：曹œ斌是机器学习和自然语言处理专家，香港  科技 大学博士。曾任职于微软研究院、Bing 搜索，担任 CorTana 首席算法科学家
+    tokenize后文本：曹 [UNK] 斌 是 机 器 学 习 和 自 然 语 言 处 理 专 家 ， 香 港 科 技 大 学 博 士 。 曾 任 职 于 微 软 研 究 院 、 bing 搜 索 ， 担 任 co ##rt ##ana 首 席 算 法 科 学 家
+
+    比如 “曹œ斌” 是PER，但是tokenize推理之后ids2token后难以和原文本对齐。
+
+    解决方法：
+    对于tokenize后的每个token，建立指向原文本的索引。 具体代码见general_ner_predict_sdk/sentence.py
+    
+
