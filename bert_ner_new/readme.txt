@@ -5,16 +5,6 @@
     sh run_predict.sh
     sh run_export.sh
 
-效果测试：
-    english：还没euler，只能离线测，例子：
-         工作目录：/data/jh/notebooks/fanxiaokun/code/general_ner/bert_ner_new
-         数据目录：/data/jh/notebooks/fanxiaokun/code/general_ner/bert_ner_new/log_for_chenhao
-            1. 生成predict数据:
-                python ../util/split_char_by_blank_space.py log_for_chenhao/eng_test.txt log_for_chenhao/eng_test.text.after
-            2. predict：
-                sh run_predict_for_chenhao.sh
-                predict的结果在：log_for_chenhao/predict_result.txt
-    chinese：https://euler.aidigger.com/deploy/apitest/1309
 
 metrics:
     中文：ontonotes_test数据集(用ontonotes_train数据集训练)：
