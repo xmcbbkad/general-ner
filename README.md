@@ -80,3 +80,5 @@ util/ner_metrics.py<br/>
   param:<br/>
     input_file：三列，第一列是文本字符，第二列是标注label，第三列是预测label<br/>
 
+# general_ner_predict_sdk
+  推理逻辑
